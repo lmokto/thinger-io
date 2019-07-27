@@ -1,0 +1,105 @@
+{
+  "deployment": {
+    "contact_email": "admin@thinger.io"
+  },
+  "ssl": {
+    "ssl_certificate": "certificates/server.crt",
+    "ssl_certificate_key": "certificates/server.key",
+    "tmp_dh_file": "certificates/dh2048.pem",
+    "ssl_ciphers": "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4",
+    "ssl_prefer_server_ciphers": true
+  },
+  "http_server": {
+    "address": "0.0.0.0",
+    "port": "80",
+    "ssl_port": "443",
+    "hosts": [
+      {
+        "host": "*",
+        "type": "rest",
+        "cors": {
+          "enabled": true
+        },
+        "web_fallback": {
+          "enabled": true,
+          "root": "${SNAP}/console"
+        }
+      }
+    ]
+  },
+  "thing_server": {
+    "address": "0.0.0.0",
+    "port": "25200",
+    "ssl_port": "25202"
+  },
+  "database": {
+    "type": "mongodb",
+    "mongodb": {
+      "host": "localhost",
+      "database": "thinger"
+    }
+  },
+  "buckets": {
+    "storage": {
+      "type": "mongodb",
+      "mongodb": {
+        "host": "localhost",
+        "database": "thinger_data",
+        "table": "buckets_data"
+      }
+    },
+    "export": {
+      "type": "filesystem",
+      "filesystem": {
+        "export_path": "exports"
+      }
+    }
+  },
+  "util": {
+    "maxmind_database": "data/GeoLite2-City.mmdb"
+  },
+  "log": {
+    "enabled": false,
+    "level": "info",
+    "output": {
+      "file": {
+        "enabled": true,
+        "flush": true,
+        "log_path": "logs"
+      },
+      "clog": {
+        "enabled": false
+      }
+    }
+  },
+  "rate_limiter": {
+    "enabled": false,
+    "type": "memory"
+  },
+  "accounts": {
+    "invalid_usernames": [],
+    "invalid_email_domains": [],
+    "required_email_domains": [],
+    "require_email_verification": false,
+    "min_password_length": 6,
+    "limits": {
+      "devices": {
+        "max_count": -1
+      },
+      "buckets": {
+        "max_count": -1,
+        "min_interval": -1
+      },
+      "endpoints": {
+        "max_count": -1,
+        "min_interval": -1
+      },
+      "dashboards": {
+        "max_count": -1
+      },
+      "tokens": {
+        "max_count": -1
+      }
+    }
+  }
+}
