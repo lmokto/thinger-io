@@ -1,8 +1,10 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.10
 
 # http://docs.thinger.io/deployment/#install-on-ubuntu-starting-from-1604-install-mongodb
 
 USER root
+WORKDIR /usr/src/app
+ADD . /usr/src/app
 
 RUN apt-get -y update &&   \
     apt-get -y install httping build-essential python3 python3-venv python3-dev python3-pip net-tools redis-server && \
@@ -21,18 +23,16 @@ RUN echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mon
 | tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 
 RUN apt-get -y update
+RUN apt-get -y install apt-utils
 RUN apt-get install -y mongodb-org
-
-# nano /etc/systemd/system/mongodb.service
-RUN rm /etc/systemd/system/mongodb.service
-COPY ./mongodb.service /etc/systemd/system/
-
-RUN systemctl start mongodb
-RUN systemctl enable mongodb
-
-## THINGER
 RUN apt-get install -y snapd
-RUN snap install thinger-maker-server
 
-COPY ./thinger.config.json /var/snap/thinger-maker-server/common/data/config.json
-RUN service snap.thinger-maker-server.thingerd restart
+RUN mkdir -p /data/db
+#RUN systemctl status snapd.service
+#RUN snap install thinger-maker-server
+
+CMD ["/usr/bin/mongod"] 
+
+EXPOSE 27017
+EXPOSE 28017
+EXPOSE 22
