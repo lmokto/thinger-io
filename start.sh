@@ -6,4 +6,4 @@
 #cp ./thinger.config.json /var/snap/thinger-maker-server/common/data/config.json
 # service snap.thinger-maker-server.thingerd restart
 
-# ping 127.0.0.1
+ping askubuntu.com 
